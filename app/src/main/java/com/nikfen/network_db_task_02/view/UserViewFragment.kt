@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
-import com.nikfen.network_db_task_02.model.remote.UserApplication
 import com.nikfen.network_db_task_02.viewmodel.UserViewViewModel
 
 class UserViewFragment : Fragment() {
@@ -30,7 +29,7 @@ class UserViewFragment : Fragment() {
 
         val userAdapter = UserAdapter(requireContext())
 
-        viewModel.fetchUserList((activity?.application as? UserApplication)?.getApi())
+        viewModel.fetchUserList()
 
         viewModel.getUserList().observe(viewLifecycleOwner) {
             Log.d("UserApp", "onViewCreated: ${it[0].gender}")

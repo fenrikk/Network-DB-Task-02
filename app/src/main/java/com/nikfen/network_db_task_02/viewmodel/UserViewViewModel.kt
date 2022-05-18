@@ -3,6 +3,7 @@ package com.nikfen.network_db_task_02.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.nikfen.network_db_task_02.model.remote.RemoteInstance
 import com.nikfen.network_db_task_02.model.remote.UserApi
 import com.nikfen.network_db_task_02.model.remote.response.UserData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -19,10 +20,10 @@ class UserViewViewModel : ViewModel() {
         compositeDisposable.dispose()
     }
 
-    fun fetchUserList(userApi: UserApi?) {
-        userApi?.let {
+    fun fetchUserList() {
+        RemoteInstance.getApi().let {
             compositeDisposable.add(
-                userApi.getUsers()
+                RemoteInstance.getApi().getUsers()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
