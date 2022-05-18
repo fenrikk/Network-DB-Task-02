@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/userViewFragment">
+
+    <fragment
+        android:id="@+id/userViewFragment"
+        android:name="com.nikfen.network_db_task_02.view.UserViewFragment"
+        android:label="user_view_fragment"
+        tools:layout="@layout/user_view_fragment" >
+        <action
+            android:id="@+id/action_userViewFragment_to_userFullViewFragment"
+            app:destination="@id/userFullViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFullViewFragment"
+        android:name="com.nikfen.network_db_task_02.view.UserFullViewFragment"
+        android:label="user_full_view_fragment"
+        tools:layout="@layout/user_full_view_fragment" />
+</navigation>
