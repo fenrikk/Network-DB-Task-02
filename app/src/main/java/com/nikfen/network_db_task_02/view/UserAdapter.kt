@@ -10,7 +10,7 @@ import com.nikfen.network_db_task_02.databinding.UserItemBinding
 import com.nikfen.network_db_task_02.model.local.tables.User
 
 class UserAdapter(
-    private var getId: (String) -> Unit
+    private var onItemClicked: (String) -> Unit
 ) : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -20,19 +20,19 @@ class UserAdapter(
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.bind(getItem(position), getId)
+        holder.bind(getItem(position), onItemClicked)
     }
 
     class UserViewHolder(private val binding: UserItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: User, getId: (String) -> Unit) {
+        fun bind(user: User, onItemClicked: (String) -> Unit) {
             Glide.with(binding.itemUserImage).load(user.picture)
                 .circleCrop()
                 .into(binding.itemUserImage)
             val fullName = user.firstName + " " + user.lastName
             binding.itemUserName.text = fullName
             binding.root.setOnClickListener {
-                getId(user.uid)
+                onItemClicked(user.uid)
             }
         }
     }

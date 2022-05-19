@@ -1,5 +1,6 @@
 package com.nikfen.network_db_task_02.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,11 +23,12 @@ class UserViewViewModel(
 
     init {
         compositeDisposable.add(
-            userApi.getUsers(25)
+            userApi.getUsers(2)
                 .subscribeOn(Schedulers.io())
                 .map {
                     it.results.map { it.toUser() }
                 }.flatMap { users ->
+                    userDao.clearTable()
                     userDao.insertUsers(users)
                         .andThen(Single.just(users))
                 }
@@ -34,7 +36,16 @@ class UserViewViewModel(
                 .subscribe({
                     userLiveDataList.value = it
                 }, {
+                    Log.d("UserApp", "Can`t load from Internet")
+                    compositeDisposable.add(
+                        userDao.getAll().subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                userLiveDataList.value = it
+                            }, {
 
+                            })
+                    )
                 })
         )
     }
