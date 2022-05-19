@@ -29,12 +29,12 @@ class UserAdapter(
         val fullName = getItem(position).firstName + " " + getItem(position).lastName
         holder.binding.itemUserName.text = fullName
         holder.binding.root.setOnClickListener {
-            userInterface.onclick(getItem(position))
+            userInterface.onclick(getItem(position).uid)
         }
     }
 
     interface UserInterface {
-        fun onclick(userData: User)
+        fun onclick(id: String)
     }
 }
 

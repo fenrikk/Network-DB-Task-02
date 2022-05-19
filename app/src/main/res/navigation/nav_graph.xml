@@ -18,5 +18,9 @@
         android:id="@+id/userFullViewFragment"
         android:name="com.nikfen.network_db_task_02.view.UserFullViewFragment"
         android:label="user_full_view_fragment"
-        tools:layout="@layout/user_full_view_fragment" />
+        tools:layout="@layout/user_full_view_fragment" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
 </navigation>
