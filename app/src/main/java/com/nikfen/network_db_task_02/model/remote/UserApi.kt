@@ -5,6 +5,6 @@ import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 
 interface UserApi {
-    @GET("./api/?results=1")
+    @GET("./api/?results=25")
     fun getUsers(): Single<UserResponse>
 }

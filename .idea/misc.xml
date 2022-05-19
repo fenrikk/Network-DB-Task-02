@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/graba/AndroidStudioProjects/NetworkDBTask02/app/src/main/res/drawable/profile_avatar.xml" value="0.1775" />
+        <entry key="..\:/Users/graba/AndroidStudioProjects/NetworkDBTask02/app/src/main/res/drawable/round_avatar.xml" value="0.1775" />
+        <entry key="..\:/Users/graba/AndroidStudioProjects/NetworkDBTask02/app/src/main/res/layout-v31/user_item.xml" value="0.8800000000000001" />
         <entry key="..\:/Users/graba/AndroidStudioProjects/NetworkDBTask02/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/graba/AndroidStudioProjects/NetworkDBTask02/app/src/main/res/layout/user_full_view_fragment.xml" value="0.4775888717156105" />
         <entry key="..\:/Users/graba/AndroidStudioProjects/NetworkDBTask02/app/src/main/res/layout/user_item.xml" value="0.264" />

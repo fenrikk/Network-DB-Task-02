@@ -1,6 +1,6 @@
 package com.nikfen.network_db_task_02.model.remote.response
 
-data class UserResponse(val data: List<UserData>)
+data class UserResponse(val results: List<UserData>)
 
 data class UserData(
     val gender: String,

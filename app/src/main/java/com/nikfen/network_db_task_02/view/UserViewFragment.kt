@@ -1,20 +1,30 @@
 package com.nikfen.network_db_task_02.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
+import com.nikfen.network_db_task_02.model.local.database.UserDatabase
+import com.nikfen.network_db_task_02.model.local.tables.User
 import com.nikfen.network_db_task_02.viewmodel.UserViewViewModel
+import com.nikfen.network_db_task_02.viewmodel.factory.UserViewViewModelFactory
 
-class UserViewFragment : Fragment() {
+class UserViewFragment : Fragment(), UserAdapter.UserInterface {
 
     private lateinit var binding: UserViewFragmentBinding
-    private val viewModel: UserViewViewModel by viewModels()
+    private val viewModel: UserViewViewModel by viewModels {
+        val db = Room.databaseBuilder(
+            requireContext(),
+            UserDatabase::class.java, "database-user"
+        ).build()
+        val userDao = db.userDao()
+        UserViewViewModelFactory(userDao)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,17 +37,20 @@ class UserViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userAdapter = UserAdapter(requireContext())
+        val userAdapter = UserAdapter(requireContext(), this)
 
         viewModel.fetchUserList()
 
         viewModel.getUserList().observe(viewLifecycleOwner) {
-            Log.d("UserApp", "onViewCreated: ${it[0].gender}")
             userAdapter.submitList(it)
             binding.userListRecycleView.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = userAdapter
             }
         }
+    }
+
+    override fun onclick(userData: User) {
+        TODO("Not yet implemented")
     }
 }
