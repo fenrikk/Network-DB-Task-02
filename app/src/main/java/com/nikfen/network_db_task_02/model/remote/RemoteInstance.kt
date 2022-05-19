@@ -1,5 +1,6 @@
 package com.nikfen.network_db_task_02.model.remote
 
+import com.nikfen.network_db_task_02.other.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,7 +20,7 @@ object RemoteInstance {
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://randomuser.me")
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())

@@ -1,6 +1,5 @@
 package com.nikfen.network_db_task_02.view
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,11 +10,8 @@ import com.nikfen.network_db_task_02.databinding.UserItemBinding
 import com.nikfen.network_db_task_02.model.local.tables.User
 
 class UserAdapter(
-    private val context: Context,
-    private val userInterface: UserInterface
+    private var getId: (String) -> Unit
 ) : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBack()) {
-
-    class UserViewHolder(val binding: UserItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         return UserViewHolder(
@@ -24,23 +20,27 @@ class UserAdapter(
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        Glide.with(context).load(getItem(position).picture)
-            .into(holder.binding.itemUserImage)
-        val fullName = getItem(position).firstName + " " + getItem(position).lastName
-        holder.binding.itemUserName.text = fullName
-        holder.binding.root.setOnClickListener {
-            userInterface.onclick(getItem(position).uid)
-        }
+        holder.bind(getItem(position), getId)
     }
 
-    interface UserInterface {
-        fun onclick(id: String)
+    class UserViewHolder(private val binding: UserItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(user: User, getId: (String) -> Unit) {
+            Glide.with(binding.itemUserImage).load(user.picture)
+                .circleCrop()
+                .into(binding.itemUserImage)
+            val fullName = user.firstName + " " + user.lastName
+            binding.itemUserName.text = fullName
+            binding.root.setOnClickListener {
+                getId(user.uid)
+            }
+        }
     }
 }
 
 class UserDiffCallBack : DiffUtil.ItemCallback<User>() {
     override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem.email == newItem.email
+        return oldItem.uid == newItem.uid
     }
 
     override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {

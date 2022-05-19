@@ -6,9 +6,10 @@ import com.nikfen.network_db_task_02.model.local.dao.UserDao
 import com.nikfen.network_db_task_02.viewmodel.UserFullViewViewModel
 
 class UserFullViewViewModelFactory(
+    private val id: String,
     private val userDao: UserDao
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return UserFullViewViewModel(userDao) as T
+        return UserFullViewViewModel(id, userDao) as T
     }
 }

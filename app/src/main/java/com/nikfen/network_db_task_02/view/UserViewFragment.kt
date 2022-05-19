@@ -1,7 +1,6 @@
 package com.nikfen.network_db_task_02.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
 import com.nikfen.network_db_task_02.model.local.database.UserDatabase
-import com.nikfen.network_db_task_02.model.local.tables.User
 import com.nikfen.network_db_task_02.model.remote.RemoteInstance
 import com.nikfen.network_db_task_02.viewmodel.UserViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserViewViewModelFactory
 
-class UserViewFragment : Fragment(), UserAdapter.UserInterface {
+class UserViewFragment : Fragment() {
 
     private lateinit var binding: UserViewFragmentBinding
     private val viewModel: UserViewViewModel by viewModels {
@@ -41,9 +39,10 @@ class UserViewFragment : Fragment(), UserAdapter.UserInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userAdapter = UserAdapter(requireContext(), this)
-
-        viewModel.fetchUserList()
+        val userAdapter = UserAdapter(getId = {
+            val action = UserViewFragmentDirections.actionUserViewFragmentToUserFullViewFragment(it)
+            findNavController().navigate(action)
+        })
 
         viewModel.getUserList().observe(viewLifecycleOwner) {
             userAdapter.submitList(it)
@@ -52,10 +51,5 @@ class UserViewFragment : Fragment(), UserAdapter.UserInterface {
                 adapter = userAdapter
             }
         }
-    }
-
-    override fun onclick(id: String) {
-        val action = UserViewFragmentDirections.actionUserViewFragmentToUserFullViewFragment(id)
-        findNavController().navigate(action)
     }
 }

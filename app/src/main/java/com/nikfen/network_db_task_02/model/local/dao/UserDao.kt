@@ -16,5 +16,8 @@ interface UserDao {
     fun getUser(id: String): Single<User>
 
     @Insert
+    fun insetUser(user: User): Completable
+
+    @Insert
     fun insertUsers(users: List<User>): Completable
 }

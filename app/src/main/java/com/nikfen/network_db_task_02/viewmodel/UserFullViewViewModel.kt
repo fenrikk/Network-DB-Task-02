@@ -10,18 +10,14 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class UserFullViewViewModel(
+    private val id: String,
     private val userDao: UserDao
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
     private val userItem = MutableLiveData<User>()
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
-    }
-
-    fun fetchUser(id: String) {
+    init {
         compositeDisposable.add(
             userDao.getUser(id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -33,6 +29,11 @@ class UserFullViewViewModel(
                     }
                 )
         )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
     }
 
     fun getUser(): LiveData<User> = userItem

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nikfen.network_db_task_02.model.local.dao.UserDao
 import com.nikfen.network_db_task_02.model.local.tables.User
-import com.nikfen.network_db_task_02.model.remote.RemoteInstance
 import com.nikfen.network_db_task_02.model.remote.UserApi
 import com.nikfen.network_db_task_02.model.remote.response.toUser
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -21,14 +20,9 @@ class UserViewViewModel(
     private val compositeDisposable = CompositeDisposable()
     private val userLiveDataList: MutableLiveData<List<User>> = MutableLiveData<List<User>>()
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
-    }
-
-    fun fetchUserList() {
+    init {
         compositeDisposable.add(
-            userApi.getUsers()
+            userApi.getUsers(25)
                 .subscribeOn(Schedulers.io())
                 .map {
                     it.results.map { it.toUser() }
@@ -45,6 +39,10 @@ class UserViewViewModel(
         )
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
+    }
 
     fun getUserList(): LiveData<List<User>> {
         return userLiveDataList

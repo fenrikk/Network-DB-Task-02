@@ -17,14 +17,7 @@ import com.nikfen.network_db_task_02.viewmodel.factory.UserFullViewViewModelFact
 class UserFullViewFragment : Fragment() {
 
     private lateinit var binding: UserFullViewFragmentBinding
-    private val viewModel: UserFullViewViewModel by viewModels {
-        val db = Room.databaseBuilder(
-            requireContext(),
-            UserDatabase::class.java, "database-user"
-        ).build()
-        val userDao = db.userDao()
-        UserFullViewViewModelFactory(userDao)
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +31,14 @@ class UserFullViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val args: UserFullViewFragmentArgs by navArgs()
-
-        viewModel.fetchUser(args.id)
+        val viewModel: UserFullViewViewModel by viewModels {
+            val db = Room.databaseBuilder(
+                requireContext(),
+                UserDatabase::class.java, "database-user"
+            ).build()
+            val userDao = db.userDao()
+            UserFullViewViewModelFactory(args.id, userDao)
+        }
 
         viewModel.getUser().observe(viewLifecycleOwner) {
             Glide.with(requireContext()).load(it.picture).into(binding.userImage)
