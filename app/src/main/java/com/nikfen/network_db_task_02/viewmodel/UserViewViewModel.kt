@@ -48,7 +48,16 @@ class UserViewViewModel(
                     })
             )
         }
-        userLiveDataList.value = userDao.getAll()
+        userDao.getAll().let {
+            compositeDisposable.add(
+                userDao.getAll().subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()).subscribe({
+                        userLiveDataList.value = it
+                    }, {
+
+                    }
+                    ))
+        }
     }
 
     fun getUserList(): LiveData<List<User>> {
