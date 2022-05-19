@@ -14,8 +14,5 @@ interface UserDao {
     fun getUser(id: Int): User
 
     @Insert
-    fun insertUsers(list: List<User>)
-
-    @Insert
     fun insertUser(user: User)
 }

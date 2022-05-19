@@ -7,10 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.Priority
 import com.nikfen.network_db_task_02.databinding.UserItemBinding
 import com.nikfen.network_db_task_02.model.local.tables.User
-import com.nikfen.network_db_task_02.model.remote.response.UserData
 
 class UserAdapter(
     private val context: Context,
