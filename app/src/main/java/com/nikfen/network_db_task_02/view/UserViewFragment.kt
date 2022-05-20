@@ -44,12 +44,13 @@ class UserViewFragment : Fragment() {
             findNavController().navigate(action)
         })
 
+        binding.userListRecycleView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = userAdapter
+        }
+
         viewModel.getUserList().observe(viewLifecycleOwner) {
             userAdapter.submitList(it)
-            binding.userListRecycleView.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = userAdapter
-            }
         }
     }
 }

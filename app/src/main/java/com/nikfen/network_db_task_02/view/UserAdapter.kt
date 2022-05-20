@@ -1,5 +1,6 @@
 package com.nikfen.network_db_task_02.view
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -25,12 +26,12 @@ class UserAdapter(
 
     class UserViewHolder(private val binding: UserItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(user: User, onItemClicked: (String) -> Unit) {
             Glide.with(binding.itemUserImage).load(user.picture)
                 .circleCrop()
                 .into(binding.itemUserImage)
-            val fullName = user.firstName + " " + user.lastName
-            binding.itemUserName.text = fullName
+            binding.itemUserName.text = "${user.firstName}  ${user.lastName}"
             binding.root.setOnClickListener {
                 onItemClicked(user.uid)
             }

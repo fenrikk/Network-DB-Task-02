@@ -25,9 +25,8 @@ class UserFullViewViewModel(
                     {
                         userItem.value = it
                     }, {
-
-                    }
-                )
+                        it.printStackTrace()
+                    })
         )
     }
 

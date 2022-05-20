@@ -1,7 +1,6 @@
 package com.nikfen.network_db_task_02.model.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.nikfen.network_db_task_02.model.local.tables.User
