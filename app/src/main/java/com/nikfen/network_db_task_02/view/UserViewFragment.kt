@@ -39,7 +39,7 @@ class UserViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userAdapter = UserAdapter(onItemClicked = {
+        val userAdapter = UserAdapter(requireContext(), onItemClicked = {
             val action = UserViewFragmentDirections.actionUserViewFragmentToUserFullViewFragment(it)
             findNavController().navigate(action)
         })

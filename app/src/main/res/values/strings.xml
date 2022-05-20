@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Network-DB-Task-02</string>
+    <string name="name">%1s %2s</string>
 </resources>
