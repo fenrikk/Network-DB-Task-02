@@ -12,6 +12,7 @@ import androidx.room.Room
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
 import com.nikfen.network_db_task_02.model.local.database.UserDatabase
 import com.nikfen.network_db_task_02.model.remote.RemoteInstance
+import com.nikfen.network_db_task_02.other.LOCAL_DATABASE_NAME
 import com.nikfen.network_db_task_02.viewmodel.UserViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserViewViewModelFactory
 
@@ -21,7 +22,7 @@ class UserViewFragment : Fragment() {
     private val viewModel: UserViewViewModel by viewModels {
         val db = Room.databaseBuilder(
             requireContext(),
-            UserDatabase::class.java, "database-user"
+            UserDatabase::class.java, LOCAL_DATABASE_NAME
         ).build()
         val userDao = db.userDao()
         val userApi = RemoteInstance.getApi()
@@ -42,6 +43,8 @@ class UserViewFragment : Fragment() {
         val userAdapter = UserAdapter(requireContext(), onItemClicked = {
             val action = UserViewFragmentDirections.actionUserViewFragmentToUserFullViewFragment(it)
             findNavController().navigate(action)
+        }, onEndReached = {
+            viewModel.loadUsers()
         })
 
         binding.userListRecycleView.apply {

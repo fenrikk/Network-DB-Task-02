@@ -16,7 +16,7 @@ interface UserDao {
     fun getUser(id: String): Single<User>
 
     @Query("DELETE FROM user")
-    fun clearTable()
+    fun clearTable(): Completable
 
     @Insert
     fun insetUser(user: User): Completable

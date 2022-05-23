@@ -10,10 +10,12 @@ import com.bumptech.glide.Glide
 import com.nikfen.network_db_task_02.R
 import com.nikfen.network_db_task_02.databinding.UserItemBinding
 import com.nikfen.network_db_task_02.model.local.tables.User
+import com.nikfen.network_db_task_02.other.RENDER_DISTANCE
 
 class UserAdapter(
     private val context: Context,
-    private var onItemClicked: (String) -> Unit
+    private val onItemClicked: (String) -> Unit,
+    private val onEndReached: () -> Unit
 ) : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -25,6 +27,9 @@ class UserAdapter(
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.bind(getItem(position), onItemClicked)
+        if (itemCount - position == RENDER_DISTANCE) {
+            onEndReached()
+        }
     }
 
     class UserViewHolder(private val binding: UserItemBinding, private val context: Context) :

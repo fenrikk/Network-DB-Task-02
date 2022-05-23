@@ -21,25 +21,7 @@ class UserViewViewModel(
     private val userLiveDataList: MutableLiveData<List<User>> = MutableLiveData<List<User>>()
 
     init {
-        compositeDisposable.add(
-            userApi.getUsers(25)
-                .subscribeOn(Schedulers.io())
-                .map {
-                    it.results.map { it.toUser() }
-                }.flatMap { users ->
-                    userDao.clearTable()
-                    userDao.insertUsers(users)
-                        .andThen(Single.just(users))
-                }.onErrorResumeNext {
-                    userDao.getAll()
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    userLiveDataList.value = it
-                }, {
-                    it.printStackTrace()
-                })
-        )
+        loadUsers()
     }
 
     override fun onCleared() {
@@ -49,5 +31,32 @@ class UserViewViewModel(
 
     fun getUserList(): LiveData<List<User>> {
         return userLiveDataList
+    }
+
+    fun loadUsers() {
+        compositeDisposable.add(
+            userApi.getUsers(25)
+                .subscribeOn(Schedulers.io())
+                .map {
+                    it.results.map { it.toUser() }
+                }.flatMap { users ->
+                    val insertCompletable = if (userLiveDataList.value?.isEmpty() != false){
+                        userDao.clearTable().andThen(userDao.insertUsers(users))
+                    }
+                    else{
+                        userDao.insertUsers(users)
+                    }
+                    insertCompletable.andThen(Single.just(users))
+                }.onErrorResumeNext {
+                    userDao.getAll()
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    val currentUsers = userLiveDataList.value ?: emptyList()
+                    userLiveDataList.value = currentUsers + it
+                }, {
+                    it.printStackTrace()
+                })
+        )
     }
 }
