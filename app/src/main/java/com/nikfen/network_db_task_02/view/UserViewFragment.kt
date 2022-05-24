@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
+import com.nikfen.network_db_task_02.model.UserDataSource
+import com.nikfen.network_db_task_02.model.local.LocalInstance
 import com.nikfen.network_db_task_02.model.local.database.UserDatabase
 import com.nikfen.network_db_task_02.model.remote.RemoteInstance
 import com.nikfen.network_db_task_02.other.LOCAL_DATABASE_NAME
@@ -20,13 +22,7 @@ class UserViewFragment : Fragment() {
 
     private lateinit var binding: UserViewFragmentBinding
     private val viewModel: UserViewViewModel by viewModels {
-        val db = Room.databaseBuilder(
-            requireContext(),
-            UserDatabase::class.java, LOCAL_DATABASE_NAME
-        ).build()
-        val userDao = db.userDao()
-        val userApi = RemoteInstance.getApi()
-        UserViewViewModelFactory(userApi, userDao)
+        UserViewViewModelFactory(UserDataSource())
     }
 
     override fun onCreateView(
