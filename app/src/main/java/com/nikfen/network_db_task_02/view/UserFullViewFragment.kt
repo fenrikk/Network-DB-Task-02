@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.nikfen.network_db_task_02.databinding.UserFullViewFragmentBinding
-import com.nikfen.network_db_task_02.model.local.database.UserDatabase
-import com.nikfen.network_db_task_02.other.LOCAL_DATABASE_NAME
+import com.nikfen.network_db_task_02.model.UserDataSource
 import com.nikfen.network_db_task_02.viewmodel.UserFullViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserFullViewViewModelFactory
 
@@ -33,12 +31,7 @@ class UserFullViewFragment : Fragment() {
 
         val args: UserFullViewFragmentArgs by navArgs()
         val viewModel: UserFullViewViewModel by viewModels {
-            val db = Room.databaseBuilder(
-                requireContext(),
-                UserDatabase::class.java, LOCAL_DATABASE_NAME
-            ).build()
-            val userDao = db.userDao()
-            UserFullViewViewModelFactory(args.id, userDao)
+            UserFullViewViewModelFactory(UserDataSource(), args.id)
         }
 
         viewModel.getUser().observe(viewLifecycleOwner) {

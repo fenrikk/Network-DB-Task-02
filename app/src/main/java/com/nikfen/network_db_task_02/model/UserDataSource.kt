@@ -4,54 +4,31 @@ import com.nikfen.network_db_task_02.model.local.LocalInstance
 import com.nikfen.network_db_task_02.model.local.tables.User
 import com.nikfen.network_db_task_02.model.remote.RemoteInstance
 import com.nikfen.network_db_task_02.model.remote.response.toUser
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-
+import io.reactivex.rxjava3.core.Single
 
 class UserDataSource : UserRepository {
 
-    private val compositeDisposable = CompositeDisposable()
+    override fun getUsers(limit: Int): Single<List<User>> {
+        return RemoteInstance.getApi().getUsers(limit)
+            .map { it.results.map { it.toUser() } }
+            .flatMap { users ->
+                LocalInstance.getDao()
+                    .insertUsers(users)
+                    .andThen(Single.just(users))
+            }
+            .onErrorResumeNext { LocalInstance.getDao().getUsers(limit) }
 
-    override fun getUsers(limit: Int): List<User> {
-        var list: List<User>? = null
-        compositeDisposable.add(
-            RemoteInstance.getApi().getUsers(limit)
-                .subscribeOn(Schedulers.io())
-                .map {
-                    it.results.map { it.toUser() }
-                }
-                .onErrorResumeNext {
-                    LocalInstance.getDao().getAll()
-                }.observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    list = it
-                }, {
-                    it.printStackTrace()
-                })
-        )
-
-        return list!!
     }
 
     override fun saveUsers(users: List<User>) {
-        compositeDisposable.add(
-            LocalInstance.getDao().insertUsers(users).subscribeOn(Schedulers.io())
-                .subscribe({}, { it.printStackTrace() })
-        )
+        TODO("Not yer implemented")
     }
 
-    override fun getUserById(id: String): User {
-        var user: User? = null
-        LocalInstance.getDao().getUser(id).subscribe({
-            user = it
-        }, {
-            it.printStackTrace()
-        })
-        return user!!
+    override fun getUserById(id: String): Single<User> {
+        return LocalInstance.getDao().getUser(id)
     }
 
-    override fun fetchUsers(): List<User> {
+    override fun fetchUsers(): Single<List<User>> {
         TODO("Not yet implemented")
     }
 }

@@ -8,13 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
 import com.nikfen.network_db_task_02.model.UserDataSource
-import com.nikfen.network_db_task_02.model.local.LocalInstance
-import com.nikfen.network_db_task_02.model.local.database.UserDatabase
-import com.nikfen.network_db_task_02.model.remote.RemoteInstance
-import com.nikfen.network_db_task_02.other.LOCAL_DATABASE_NAME
 import com.nikfen.network_db_task_02.viewmodel.UserViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserViewViewModelFactory
 

@@ -9,8 +9,8 @@ import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM user")
-    fun getAll(): Single<List<User>>
+    @Query("SELECT * FROM user LIMIT :limit")
+    fun getUsers(limit: Int): Single<List<User>>
 
     @Query("SELECT * FROM user WHERE uid LIKE :id")
     fun getUser(id: String): Single<User>
