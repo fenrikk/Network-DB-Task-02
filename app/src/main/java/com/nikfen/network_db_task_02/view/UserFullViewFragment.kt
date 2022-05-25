@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.nikfen.network_db_task_02.databinding.UserFullViewFragmentBinding
-import com.nikfen.network_db_task_02.model.UserRequestMainRepository
+import com.nikfen.network_db_task_02.model.UserMainRepository
 import com.nikfen.network_db_task_02.model.local.UserRequestLocalRepository
 import com.nikfen.network_db_task_02.model.local.database.UserDatabase
 import com.nikfen.network_db_task_02.model.remote.RetrofitClient
@@ -36,7 +36,7 @@ class UserFullViewFragment : Fragment() {
         val args: UserFullViewFragmentArgs by navArgs()
         val viewModel: UserFullViewViewModel by viewModels {
             UserFullViewViewModelFactory(
-                UserRequestMainRepository(
+                UserMainRepository(
                     UserRequestLocalRepository(
                         UserDatabase.getInstance(requireContext()).userDao()
                     ),

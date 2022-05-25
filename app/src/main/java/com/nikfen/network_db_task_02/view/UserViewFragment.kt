@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
-import com.nikfen.network_db_task_02.model.UserRequestMainRepository
+import com.nikfen.network_db_task_02.model.UserMainRepository
 import com.nikfen.network_db_task_02.model.local.UserRequestLocalRepository
 import com.nikfen.network_db_task_02.model.local.database.UserDatabase
 import com.nikfen.network_db_task_02.model.remote.RetrofitClient
@@ -22,7 +22,7 @@ class UserViewFragment : Fragment() {
     private lateinit var binding: UserViewFragmentBinding
     private val viewModel: UserViewViewModel by viewModels {
         UserViewViewModelFactory(
-            UserRequestMainRepository(
+            UserMainRepository(
                 UserRequestLocalRepository(
                     UserDatabase.getInstance(requireContext()).userDao()
                 ),
