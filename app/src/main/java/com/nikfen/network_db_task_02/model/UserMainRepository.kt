@@ -1,14 +1,14 @@
 package com.nikfen.network_db_task_02.model
 
-import com.nikfen.network_db_task_02.model.local.UserLocal
+import com.nikfen.network_db_task_02.model.local.UserRepository
 import com.nikfen.network_db_task_02.model.local.tables.User
-import com.nikfen.network_db_task_02.model.remote.UserRemote
+import com.nikfen.network_db_task_02.model.remote.response.UserLoader
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
 class UserMainRepository(
-    private val userLocal: UserLocal,
-    private val userRemote: UserRemote
+    private val userLocal: UserRepository,
+    private val userRemote: UserLoader
 ) : UserRepository {
     override fun saveUsers(users: List<User>): Completable {
         return userLocal.saveUsers(users)
@@ -18,11 +18,16 @@ class UserMainRepository(
         return userLocal.getUserById(id)
     }
 
-    override fun getUsers(limit: Int): Single<List<User>> {
-        return userRemote.getUsers(limit)
+    override fun clearBase(): Completable {
+        return userLocal.clearBase()
+    }
+
+    override fun getUsers(page: Int, limit: Int): Single<List<User>> {
+        return userRemote.getUsers(page, limit)
             .flatMap { users ->
+                if (page == 1) userLocal.clearBase()
                 userLocal.saveUsers(users).andThen(Single.just(users))
-            }.onErrorResumeNext { userLocal.getUsers(limit) }
+            }.onErrorResumeNext { userLocal.getUsers(page, limit) }
 
     }
 }

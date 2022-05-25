@@ -6,10 +6,10 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class UserRequestLocalRepository(
+class UserLoaderLocalRepository(
     private val userDao: UserDao
-) : UserLocal{
-    override fun getUsers(limit: Int): Single<List<User>> {
+) : UserRepository {
+    override fun getUsers(page: Int, limit: Int): Single<List<User>> {
         return userDao.getUsers(limit)
     }
 
@@ -19,5 +19,9 @@ class UserRequestLocalRepository(
 
     override fun getUserById(id: String): Single<User> {
         return userDao.getUser(id).subscribeOn(Schedulers.io())
+    }
+
+    override fun clearBase(): Completable {
+        return userDao.clearTable()
     }
 }

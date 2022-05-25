@@ -16,6 +16,7 @@ class UserViewViewModel(
 
     private val compositeDisposable = CompositeDisposable()
     private val userLiveDataList: MutableLiveData<List<User>> = MutableLiveData<List<User>>()
+    private var page = 0
 
     init {
         loadUsers()
@@ -26,8 +27,9 @@ class UserViewViewModel(
     }
 
     fun loadUsers() {
+        page++
         compositeDisposable.add(
-            userMainRepository.getUsers(FETCH_VALUE)
+            userMainRepository.getUsers(page, FETCH_VALUE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
