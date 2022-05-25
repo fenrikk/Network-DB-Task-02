@@ -12,7 +12,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val db = Room.databaseBuilder(
             this,
             UserDatabase::class.java, LOCAL_DATABASE_NAME
