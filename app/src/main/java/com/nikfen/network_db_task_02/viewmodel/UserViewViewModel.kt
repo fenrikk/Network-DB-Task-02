@@ -1,6 +1,5 @@
 package com.nikfen.network_db_task_02.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,7 +30,6 @@ class UserViewViewModel(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Log.d("UserApp", "loadUsers: ${it[0].email}")
                     val currentUsers = userLiveDataList.value ?: emptyList()
                     userLiveDataList.value = currentUsers + it
                 }, {
