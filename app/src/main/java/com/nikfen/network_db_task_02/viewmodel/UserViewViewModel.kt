@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nikfen.network_db_task_02.model.UserRequestMainRepository
 import com.nikfen.network_db_task_02.model.local.tables.User
+import com.nikfen.network_db_task_02.other.FETCH_VALUE
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -26,7 +27,7 @@ class UserViewViewModel(
 
     fun loadUsers() {
         compositeDisposable.add(
-            userMainRepository.getUsers(25)
+            userMainRepository.getUsers(FETCH_VALUE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
