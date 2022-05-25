@@ -9,9 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
-import com.nikfen.network_db_task_02.model.UserMainRepository
-import com.nikfen.network_db_task_02.model.local.UserLocalRepository
-import com.nikfen.network_db_task_02.model.remote.UserRemoteRepository
+import com.nikfen.network_db_task_02.model.UserRequestMainRepository
+import com.nikfen.network_db_task_02.model.local.UserRequestLocalRepository
+import com.nikfen.network_db_task_02.model.local.database.UserDatabase
+import com.nikfen.network_db_task_02.model.remote.RetrofitClient
+import com.nikfen.network_db_task_02.model.remote.UserRequestRemoteRepository
 import com.nikfen.network_db_task_02.viewmodel.UserViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserViewViewModelFactory
 
@@ -20,9 +22,13 @@ class UserViewFragment : Fragment() {
     private lateinit var binding: UserViewFragmentBinding
     private val viewModel: UserViewViewModel by viewModels {
         UserViewViewModelFactory(
-            UserMainRepository(
-                UserLocalRepository(),
-                UserRemoteRepository()
+            UserRequestMainRepository(
+                UserRequestLocalRepository(
+                    UserDatabase.getInstance(requireContext()).userDao()
+                ),
+                UserRequestRemoteRepository(
+                    RetrofitClient.getApi()
+                )
             )
         )
     }
@@ -38,7 +44,7 @@ class UserViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userAdapter = UserAdapter(requireContext(), onItemClicked = {
+        val userAdapter = UserAdapter(onItemClicked = {
             val action = UserViewFragmentDirections.actionUserViewFragmentToUserFullViewFragment(it)
             findNavController().navigate(action)
         }, onEndReached = {

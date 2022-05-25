@@ -1,6 +1,5 @@
 package com.nikfen.network_db_task_02.view
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -13,15 +12,13 @@ import com.nikfen.network_db_task_02.model.local.tables.User
 import com.nikfen.network_db_task_02.other.RENDER_DISTANCE
 
 class UserAdapter(
-    private val context: Context,
     private val onItemClicked: (String) -> Unit,
     private val onEndReached: () -> Unit
 ) : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         return UserViewHolder(
-            UserItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            context
+            UserItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
@@ -32,14 +29,14 @@ class UserAdapter(
         }
     }
 
-    class UserViewHolder(private val binding: UserItemBinding, private val context: Context) :
+    class UserViewHolder(private val binding: UserItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User, onItemClicked: (String) -> Unit) {
             Glide.with(binding.itemUserImage).load(user.picture)
                 .circleCrop()
                 .into(binding.itemUserImage)
             binding.itemUserName.text =
-                context.getString(R.string.name, user.firstName, user.lastName)
+                binding.root.context.getString(R.string.name, user.firstName, user.lastName)
             binding.root.setOnClickListener {
                 onItemClicked(user.uid)
             }

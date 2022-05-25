@@ -9,9 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.nikfen.network_db_task_02.databinding.UserFullViewFragmentBinding
-import com.nikfen.network_db_task_02.model.UserMainRepository
-import com.nikfen.network_db_task_02.model.local.UserLocalRepository
-import com.nikfen.network_db_task_02.model.remote.UserRemoteRepository
+import com.nikfen.network_db_task_02.model.UserRequestMainRepository
+import com.nikfen.network_db_task_02.model.local.UserRequestLocalRepository
+import com.nikfen.network_db_task_02.model.local.database.UserDatabase
+import com.nikfen.network_db_task_02.model.remote.RetrofitClient
+import com.nikfen.network_db_task_02.model.remote.UserRequestRemoteRepository
 import com.nikfen.network_db_task_02.viewmodel.UserFullViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserFullViewViewModelFactory
 
@@ -34,9 +36,13 @@ class UserFullViewFragment : Fragment() {
         val args: UserFullViewFragmentArgs by navArgs()
         val viewModel: UserFullViewViewModel by viewModels {
             UserFullViewViewModelFactory(
-                UserMainRepository(
-                    UserLocalRepository(),
-                    UserRemoteRepository()
+                UserRequestMainRepository(
+                    UserRequestLocalRepository(
+                        UserDatabase.getInstance(requireContext()).userDao()
+                    ),
+                    UserRequestRemoteRepository(
+                        RetrofitClient.getApi()
+                    )
                 ), args.id
             )
         }

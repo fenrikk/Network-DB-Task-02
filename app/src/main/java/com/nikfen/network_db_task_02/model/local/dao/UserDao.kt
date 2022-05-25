@@ -19,9 +19,6 @@ interface UserDao {
     fun clearTable(): Completable
 
     @Insert
-    fun insetUser(user: User): Completable
-
-    @Insert
     fun insertUsers(users: List<User>): Completable
 
 }
