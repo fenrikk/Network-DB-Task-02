@@ -27,12 +27,13 @@ class UserViewViewModel(
     }
 
     fun loadUsers() {
-        page++
+
         compositeDisposable.add(
             userMainRepository.getUsers(page, FETCH_VALUE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    page++
                     val currentUsers = userLiveDataList.value ?: emptyList()
                     userLiveDataList.value = currentUsers + it
                 }, {

@@ -25,8 +25,9 @@ class UserMainRepository(
     override fun getUsers(page: Int, limit: Int): Single<List<User>> {
         return userRemote.getUsers(page, limit)
             .flatMap { users ->
-                if (page == 1) userLocal.clearBase()
-                userLocal.saveUsers(users).andThen(Single.just(users))
+                userLocal.clearBase()
+                    .andThen(userLocal.saveUsers(users))
+                    .andThen(Single.just(users))
             }.onErrorResumeNext { userLocal.getUsers(page, limit) }
 
     }
