@@ -1,6 +1,6 @@
 package com.nikfen.network_db_task_02.model.remote
 
-import com.nikfen.network_db_task_02.model.remote.response.UserLoader
+import com.nikfen.network_db_task_02.model.UserLoader
 import com.nikfen.network_db_task_02.model.local.tables.User
 import com.nikfen.network_db_task_02.model.remote.response.toUser
 import io.reactivex.rxjava3.core.Single

@@ -2,7 +2,6 @@ package com.nikfen.network_db_task_02.model
 
 import com.nikfen.network_db_task_02.model.local.UserRepository
 import com.nikfen.network_db_task_02.model.local.tables.User
-import com.nikfen.network_db_task_02.model.remote.response.UserLoader
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 

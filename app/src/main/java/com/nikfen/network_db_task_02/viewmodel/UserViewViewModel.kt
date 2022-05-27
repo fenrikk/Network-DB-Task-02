@@ -12,9 +12,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class UserViewViewModel(
     private val userMainRepository: UserMainRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
-    private val compositeDisposable = CompositeDisposable()
     private val userLiveDataList: MutableLiveData<List<User>> = MutableLiveData<List<User>>()
     private var page = 0
 
@@ -27,23 +26,15 @@ class UserViewViewModel(
     }
 
     fun loadUsers() {
-
-        compositeDisposable.add(
-            userMainRepository.getUsers(page, FETCH_VALUE)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    page++
-                    val currentUsers = userLiveDataList.value ?: emptyList()
-                    userLiveDataList.value = currentUsers + it
-                }, {
-                    it.printStackTrace()
-                })
-        )
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
+        userMainRepository.getUsers(page, FETCH_VALUE)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                page++
+                val currentUsers = userLiveDataList.value ?: emptyList()
+                userLiveDataList.value = currentUsers + it
+            }, {
+                it.printStackTrace()
+            }).autoDispose()
     }
 }
