@@ -8,30 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.nikfen.network_db_task_02.UserApp
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
 import com.nikfen.network_db_task_02.model.UserMainRepository
-import com.nikfen.network_db_task_02.model.local.UserLoaderLocalRepository
-import com.nikfen.network_db_task_02.model.local.database.UserDatabase
-import com.nikfen.network_db_task_02.model.remote.RetrofitClient
-import com.nikfen.network_db_task_02.model.remote.UserLoaderRemoteRepository
 import com.nikfen.network_db_task_02.viewmodel.UserViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserViewViewModelFactory
+import javax.inject.Inject
 
 class UserViewFragment : Fragment() {
 
     private lateinit var binding: UserViewFragmentBinding
-    private val viewModel: UserViewViewModel by viewModels {
-        UserViewViewModelFactory(
-            UserMainRepository(
-                UserLoaderLocalRepository(
-                    UserDatabase.getInstance(requireContext()).userDao()
-                ),
-                UserLoaderRemoteRepository(
-                    RetrofitClient.getApi()
-                )
-            )
-        )
-    }
+
+    @Inject
+    lateinit var userMainRepository: UserMainRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +32,13 @@ class UserViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val app = requireContext().applicationContext as UserApp
+        app.getAppComponent().inject(this)
+
+        val viewModel: UserViewViewModel by viewModels {
+            UserViewViewModelFactory(userMainRepository)
+        }
 
         val userAdapter = UserAdapter(onItemClicked = {
             val action = UserViewFragmentDirections.actionUserViewFragmentToUserFullViewFragment(it)
