@@ -9,6 +9,9 @@ import com.nikfen.network_db_task_02.other.BASE_URL
 import com.nikfen.network_db_task_02.other.LOCAL_DATABASE_NAME
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -16,7 +19,8 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-class DataModule(private val applicationContext: Context) {
+@InstallIn(ActivityComponent::class)
+class DataModule() {
 
     @Provides
     fun provideUserApi(): UserApi {
@@ -41,9 +45,9 @@ class DataModule(private val applicationContext: Context) {
     fun provideDao(userDatabase: UserDatabase): UserDao = userDatabase.userDao()
 
     @Provides
-    fun provideDataBase(): UserDatabase {
+    fun provideDataBase(@ApplicationContext context: Context): UserDatabase {
         return Room.databaseBuilder(
-            applicationContext,
+            context,
             UserDatabase::class.java, LOCAL_DATABASE_NAME
         ).build()
     }

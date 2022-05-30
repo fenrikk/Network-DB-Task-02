@@ -8,12 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.nikfen.network_db_task_02.UserApp
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
 import com.nikfen.network_db_task_02.viewmodel.UserViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserViewViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class UserViewFragment : Fragment() {
 
     private lateinit var binding: UserViewFragmentBinding
@@ -31,9 +32,6 @@ class UserViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val app = requireContext().applicationContext as UserApp
-        app.getAppComponent().inject(this)
 
         val viewModel: UserViewViewModel by viewModels { userViewViewModelFactory }
 

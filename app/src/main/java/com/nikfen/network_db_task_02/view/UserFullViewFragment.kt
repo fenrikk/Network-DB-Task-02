@@ -13,8 +13,10 @@ import com.nikfen.network_db_task_02.databinding.UserFullViewFragmentBinding
 import com.nikfen.network_db_task_02.di.viewModel.FullViewViewModelSubcomponent
 import com.nikfen.network_db_task_02.viewmodel.UserFullViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserFullViewViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class UserFullViewFragment : Fragment() {
 
     private lateinit var binding: UserFullViewFragmentBinding
@@ -32,9 +34,6 @@ class UserFullViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val app = requireContext().applicationContext as UserApp
-        app.getAppComponent().inject(this)
 
         val args: UserFullViewFragmentArgs by navArgs()
         val viewModel: UserFullViewViewModel by viewModels {
