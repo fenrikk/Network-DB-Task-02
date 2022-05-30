@@ -10,19 +10,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nikfen.network_db_task_02.UserApp
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
-import com.nikfen.network_db_task_02.model.local.UserRepository
 import com.nikfen.network_db_task_02.viewmodel.UserViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserViewViewModelFactory
 import javax.inject.Inject
-import javax.inject.Named
 
 class UserViewFragment : Fragment() {
 
     private lateinit var binding: UserViewFragmentBinding
 
     @Inject
-    @Named("main")
-    lateinit var userMainRepository: UserRepository
+    lateinit var userViewViewModelFactory: UserViewViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,9 +35,7 @@ class UserViewFragment : Fragment() {
         val app = requireContext().applicationContext as UserApp
         app.getAppComponent().inject(this)
 
-        val viewModel: UserViewViewModel by viewModels {
-            UserViewViewModelFactory(userMainRepository)
-        }
+        val viewModel: UserViewViewModel by viewModels { userViewViewModelFactory }
 
         val userAdapter = UserAdapter(onItemClicked = {
             val action = UserViewFragmentDirections.actionUserViewFragmentToUserFullViewFragment(it)
