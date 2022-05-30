@@ -5,7 +5,6 @@ import com.nikfen.network_db_task_02.model.local.tables.User
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
-import javax.inject.Inject
 
 class UserLoaderLocalRepository(
     private val userDao: UserDao
