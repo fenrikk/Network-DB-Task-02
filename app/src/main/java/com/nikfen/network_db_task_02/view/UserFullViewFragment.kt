@@ -1,21 +1,15 @@
 package com.nikfen.network_db_task_02.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.nikfen.network_db_task_02.databinding.UserFullViewFragmentBinding
-import com.nikfen.network_db_task_02.model.UserMainRepository
-import com.nikfen.network_db_task_02.model.local.UserLoaderLocalRepository
-import com.nikfen.network_db_task_02.model.local.database.UserDatabase
-import com.nikfen.network_db_task_02.model.remote.RetrofitClient
-import com.nikfen.network_db_task_02.model.remote.UserLoaderRemoteRepository
 import com.nikfen.network_db_task_02.viewmodel.UserFullViewViewModel
-import com.nikfen.network_db_task_02.viewmodel.factory.UserFullViewViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserFullViewFragment : Fragment() {
 
@@ -34,19 +28,9 @@ class UserFullViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val args: UserFullViewFragmentArgs by navArgs()
-        val viewModel: UserFullViewViewModel by viewModels {
-            UserFullViewViewModelFactory(
-                UserMainRepository(
-                    UserLoaderLocalRepository(
-                        UserDatabase.getInstance(requireContext()).userDao()
-                    ),
-                    UserLoaderRemoteRepository(
-                        RetrofitClient.getApi()
-                    )
-                ), args.id
-            )
-        }
+        val viewModel by viewModel<UserFullViewViewModel>()
 
+        viewModel.fetchUser(args.id)
         viewModel.getUser().observe(viewLifecycleOwner) {
             Glide.with(requireContext()).load(it.picture).into(binding.userImage)
             binding.firstName.text = it.firstName

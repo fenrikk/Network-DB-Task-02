@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Single
 class UserMainRepository(
     private val userLocal: UserRepository,
     private val userRemote: UserLoader
-) : UserRepository {
+) : UserMain {
     override fun saveUsers(users: List<User>): Completable {
         return userLocal.saveUsers(users)
     }
