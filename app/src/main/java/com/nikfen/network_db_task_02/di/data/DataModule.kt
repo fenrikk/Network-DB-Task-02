@@ -1,4 +1,4 @@
-package com.nikfen.network_db_task_02.di
+package com.nikfen.network_db_task_02.di.data
 
 import android.content.Context
 import androidx.room.Room

@@ -1,4 +1,4 @@
-package com.nikfen.network_db_task_02.di
+package com.nikfen.network_db_task_02.di.data
 
 import com.nikfen.network_db_task_02.model.UserLoader
 import com.nikfen.network_db_task_02.model.UserMainRepository
@@ -19,7 +19,6 @@ interface DataBinding {
     @Binds
     fun bindLocalRepository(userLoaderLocalRepository: UserLoaderLocalRepository): UserRepository
 
-    @Named("main")
     @Binds
     fun bindMainRepository(userMainRepository: UserMainRepository): UserRepository
 }

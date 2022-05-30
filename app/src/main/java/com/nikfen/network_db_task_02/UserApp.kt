@@ -1,10 +1,9 @@
 package com.nikfen.network_db_task_02
 
 import android.app.Application
-import android.content.Context
 import com.nikfen.network_db_task_02.di.AppComponent
 import com.nikfen.network_db_task_02.di.DaggerAppComponent
-import com.nikfen.network_db_task_02.di.DataModule
+import com.nikfen.network_db_task_02.di.data.DataModule
 
 class UserApp : Application() {
     private lateinit var appComponent: AppComponent

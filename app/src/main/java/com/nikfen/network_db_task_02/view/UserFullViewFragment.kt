@@ -10,19 +10,17 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.nikfen.network_db_task_02.UserApp
 import com.nikfen.network_db_task_02.databinding.UserFullViewFragmentBinding
-import com.nikfen.network_db_task_02.model.local.UserRepository
+import com.nikfen.network_db_task_02.di.viewModel.FullViewViewModelSubcomponent
 import com.nikfen.network_db_task_02.viewmodel.UserFullViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserFullViewViewModelFactory
 import javax.inject.Inject
-import javax.inject.Named
 
 class UserFullViewFragment : Fragment() {
 
     private lateinit var binding: UserFullViewFragmentBinding
 
     @Inject
-    @Named("local")
-    lateinit var userRepository: UserRepository
+    lateinit var factory: FullViewViewModelSubcomponent.Factory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +39,7 @@ class UserFullViewFragment : Fragment() {
         val args: UserFullViewFragmentArgs by navArgs()
         val viewModel: UserFullViewViewModel by viewModels {
             UserFullViewViewModelFactory(
-                userRepository, args.id
+                factory, args.id
             )
         }
 
