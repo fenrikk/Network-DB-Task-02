@@ -2,14 +2,9 @@ package com.nikfen.network_db_task_02.di
 
 import android.content.Context
 import androidx.room.Room
-import com.nikfen.network_db_task_02.model.UserLoader
-import com.nikfen.network_db_task_02.model.UserMainRepository
-import com.nikfen.network_db_task_02.model.local.UserLoaderLocalRepository
-import com.nikfen.network_db_task_02.model.local.UserRepository
 import com.nikfen.network_db_task_02.model.local.dao.UserDao
 import com.nikfen.network_db_task_02.model.local.database.UserDatabase
 import com.nikfen.network_db_task_02.model.remote.UserApi
-import com.nikfen.network_db_task_02.model.remote.UserLoaderRemoteRepository
 import com.nikfen.network_db_task_02.other.BASE_URL
 import com.nikfen.network_db_task_02.other.LOCAL_DATABASE_NAME
 import dagger.Module
@@ -22,19 +17,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 class DataModule(private val applicationContext: Context) {
-    @Provides
-    fun provideMainRepository(
-        userRepository: UserRepository,
-        userLoader: UserLoader
-    ): UserMainRepository = UserMainRepository(userRepository, userLoader)
-
-    @Provides
-    fun provideRemote(userApi: UserApi): UserLoaderRemoteRepository =
-        UserLoaderRemoteRepository(userApi)
-
-    @Provides
-    fun provideLocal(userDao: UserDao): UserLoaderLocalRepository =
-        UserLoaderLocalRepository(userDao)
 
     @Provides
     fun provideUserApi(): UserApi {
@@ -56,10 +38,13 @@ class DataModule(private val applicationContext: Context) {
     }
 
     @Provides
-    fun provideDao(): UserDao {
+    fun provideDao(userDatabase: UserDatabase): UserDao = userDatabase.userDao()
+
+    @Provides
+    fun provideDataBase(): UserDatabase {
         return Room.databaseBuilder(
             applicationContext,
             UserDatabase::class.java, LOCAL_DATABASE_NAME
-        ).build().userDao()
+        ).build()
     }
 }

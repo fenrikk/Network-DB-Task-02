@@ -10,17 +10,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nikfen.network_db_task_02.UserApp
 import com.nikfen.network_db_task_02.databinding.UserViewFragmentBinding
-import com.nikfen.network_db_task_02.model.UserMain
+import com.nikfen.network_db_task_02.model.local.UserRepository
 import com.nikfen.network_db_task_02.viewmodel.UserViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserViewViewModelFactory
 import javax.inject.Inject
+import javax.inject.Named
 
 class UserViewFragment : Fragment() {
 
     private lateinit var binding: UserViewFragmentBinding
 
     @Inject
-    lateinit var userMainRepository: UserMain
+    @Named("main")
+    lateinit var userMainRepository: UserRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -14,12 +14,14 @@ import com.nikfen.network_db_task_02.model.local.UserRepository
 import com.nikfen.network_db_task_02.viewmodel.UserFullViewViewModel
 import com.nikfen.network_db_task_02.viewmodel.factory.UserFullViewViewModelFactory
 import javax.inject.Inject
+import javax.inject.Named
 
 class UserFullViewFragment : Fragment() {
 
     private lateinit var binding: UserFullViewFragmentBinding
 
     @Inject
+    @Named("local")
     lateinit var userRepository: UserRepository
 
     override fun onCreateView(

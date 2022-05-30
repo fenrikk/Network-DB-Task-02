@@ -4,11 +4,14 @@ import com.nikfen.network_db_task_02.model.local.UserRepository
 import com.nikfen.network_db_task_02.model.local.tables.User
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import javax.inject.Inject
+import javax.inject.Named
 
-class UserMainRepository(
+class UserMainRepository @Inject constructor(
+    @Named("local")
     private val userLocal: UserRepository,
     private val userRemote: UserLoader
-) : UserMain {
+) : UserRepository {
     override fun saveUsers(users: List<User>): Completable {
         return userLocal.saveUsers(users)
     }
