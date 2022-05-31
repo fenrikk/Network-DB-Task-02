@@ -4,12 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.nikfen.network_db_task_02.model.local.UserRepository
 import com.nikfen.network_db_task_02.model.local.tables.User
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class UserFullViewViewModel(
+class UserFullViewViewModel @AssistedInject constructor(
     userRepository: UserRepository,
-    id: String
+    @Assisted id: String
 ) : BaseViewModel() {
 
     private val userItem = MutableLiveData<User>()
@@ -26,4 +29,9 @@ class UserFullViewViewModel(
     }
 
     fun getUser(): LiveData<User> = userItem
+
+    @AssistedFactory
+    interface Factory {
+        fun build(id: String): UserFullViewViewModel
+    }
 }
